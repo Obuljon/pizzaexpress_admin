@@ -23,6 +23,6 @@ TestResults.xml
 
 node_modules
 
-
+*.env
 
 log.txt
