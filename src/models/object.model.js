@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const objact = new Schema({
+const object = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   deskimg: { type: String, required: true },
@@ -8,4 +8,4 @@ const objact = new Schema({
   phoneimg: { type: String, required: true },
 });
 
-export default model("objact", objact);
+export default model("object", object);

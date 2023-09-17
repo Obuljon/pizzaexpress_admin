@@ -9,4 +9,4 @@ import {
 const notEmptyArr = ["name", "price"].map((item) => (item = notEmpty(item)));
 
 const isNumberAndStringArr = [isString("name"), isNumber("price")];
-export const objactValidate = [notEmptyArr, isNumberAndStringArr].flat();
+export const objectValidate = [notEmptyArr, isNumberAndStringArr].flat();
