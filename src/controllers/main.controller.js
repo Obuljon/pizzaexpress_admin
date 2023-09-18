@@ -23,10 +23,9 @@ export const createobject = asyncHandler(async (req, res) => {
 
 export const readobject = asyncHandler(async (req, res) => {
   const { _id } = req.params;
-  const data = await object.findById(_id);
-  if (!data) {
+  const data = await object.findById(_id).catch(() => {
     return res.redirect("/api/dataincorrect");
-  }
+  });
   res.status(200).json(data);
 });
 
@@ -62,10 +61,9 @@ export const pagereadobject = asyncHandler(async (req, res) => {
 
 export const updateobject = asyncHandler(async (req, res) => {
   const { _id } = req.params;
-  const olddata = await object.findById(_id);
-  if (!olddata) {
+  const olddata = await object.findById(_id).catch(() => {
     return res.redirect("/api/dataincorrect");
-  }
+  });
   let newfiles = {};
   for (let key in req.files) {
     const oldfile = await gfs.find({ filename: olddata[key] }).toArray();
@@ -79,10 +77,10 @@ export const updateobject = asyncHandler(async (req, res) => {
 
 export const deleteobject = asyncHandler(async (req, res) => {
   const { _id } = req.params;
-  const delObj = await object.findById(_id);
-  if (!delObj) {
+  const delObj = await object.findById(_id).catch(() => {
     return res.redirect("/api/dataincorrect");
-  }
+  });
+
   const { deskimg, planshetyimg, phoneimg } = delObj;
   const delfiles = { deskimg, planshetyimg, phoneimg };
   for (let key in delfiles) {
