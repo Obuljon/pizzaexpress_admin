@@ -20,50 +20,48 @@ export function isLength(inputname, min) {
 export function isNumber(inputname) {
   return body(inputname)
     .isNumeric()
-
     .withMessage(inputname + " must be a number");
 }
 
-function fileerrors(files) {
-  let errorsArr = [];
-  let filesname = ["deskimg", "planshetyimg", "phoneimg"];
-  filesname.forEach((item) => {
-    if (!files || !files[item]) {
-      errorsArr.push({
-        type: "file",
-        msg: item + " must not be empty",
-        path: item,
-        location: "files",
-      });
-    }
-  });
-  return errorsArr;
+export function IsOptionalisStr(inputname) {
+  return body(inputname)
+    .optional()
+    .isString()
+    .withMessage(inputname + " must be a string");
 }
 
-function filedelete(filepath, name) {
+export function IsOptionalisNum(inputname) {
+  return body(inputname)
+    .optional()
+    .isNumeric()
+    .withMessage(inputname + " must be a number");
+}
+
+export function filedelete(filepath, name) {
   if (filepath[name]) {
     gfs.delete(filepath[name][0].id);
   }
 }
 
 export const isFilesValidate = (req, res, next) => {
-  let errorsArr = fileerrors(req.files);
-  if (
-    !req.files ||
-    !req.files.deskimg ||
-    !req.files.planshetyimg ||
-    !req.files.phoneimg
-  ) {
-    filedelete(req.files, "deskimg");
-    filedelete(req.files, "planshetyimg");
-    filedelete(req.files, "phoneimg");
-    return res.status(400).json({ errors: errorsArr });
+  if (!req.file) {
+    return res.status(400).json({
+      errors: [
+        {
+          type: "file",
+          msg: "img must not be empty",
+          path: "img",
+          location: "file",
+        },
+      ],
+    });
   } else next();
 };
 
 export const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    if (req.file) gfs.delete(req.file.id);
     return res.status(400).json({ errors: errors.array() });
   }
   next();

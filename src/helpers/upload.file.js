@@ -18,7 +18,7 @@ import { config } from "dotenv";
 const __dirname = join(dirname(fileURLToPath(import.meta.url)), "../../");
 config({ path: __dirname + ".env" });
 // Set storage
-var storage = new GridFsStorage({
+export var storage = new GridFsStorage({
   url: process.env.MONGODB_URI,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
@@ -43,8 +43,9 @@ export const upload = multer({
   storage: storage,
 });
 
+
 // check file type
-function checkFileType(req, file, cb) {
+export function checkFileType(req, file, cb) {
   const fileTypes = /jpeg|jpg|png|gif/;
   const extname = fileTypes.test(
     path.extname(file.originalname).toLocaleLowerCase()
